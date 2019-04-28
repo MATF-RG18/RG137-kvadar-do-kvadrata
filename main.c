@@ -5,6 +5,7 @@
  
   /* Deklaracije callback funkcija. */
 void on_keyboard(unsigned char key, int x, int y);
+void on_reshape(int width, int height);
 void on_display(void);
 void on_timer(int id);
 void material_and_light();
@@ -28,12 +29,12 @@ int main(int argc, char **argv)
  
     /* Poziv callback funkcija. */
     glutDisplayFunc(on_display);
+    glutReshapeFunc(on_reshape);
     glutKeyboardFunc(on_keyboard);
  
     /* OpenGL inicijalizacija. */
     glClearColor(0.95, 0.4, 0.2, 0);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
  
     /* Postavljaju se svojstva prvog svetla */
     glEnable(GL_LIGHT0);
@@ -65,6 +66,462 @@ void on_keyboard(unsigned char key, int x, int y)
     } 
 }
  
+
+    /*    sajt odakle je preuzeta nijansa plave boje
+        https://community.khronos.org/t/color-tables/22518
+        CadetBlue = color red 0.372549 green 0.623529 blue 0.623529
+    */
+
+void stage(){
+    
+    glPushMatrix();
+    	glColor3f(1, 0, 0);
+    	glTranslatef(0.5, 1, 0.5);
+    	glScalef(1, 2, 1);
+    	glutSolidCube(1);
+    glPopMatrix();
+    
+    /*Poligon*/
+
+    glPushMatrix();
+       glColor3f(0.372549,0.623529,0.623529);
+       glTranslatef(1, 0, 2);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+    	glColor3f(0.38, 0.70, 0.70);
+       glTranslatef(1, 0, 3);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(2, 0, 2);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.75);
+       glTranslatef(2, 0, 3);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.5,0.70,0.80);
+       glTranslatef(2, 0, 4);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.4,0.8,0.9);
+       glTranslatef(3, 0, 2);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.9);
+       glTranslatef(3, 0, 3);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.4,0.7,0.8);
+       glTranslatef(3, 0, 4);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.372549,0.623529,0.623529);
+       glTranslatef(4, 0, 2);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+    	glColor3f(0.38, 0.70, 0.70);
+       glTranslatef(4, 0, 3);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(4, 0, 4);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.75);
+       glTranslatef(4, 0, 5);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.5,0.70,0.80);
+       glTranslatef(4, 0, 6);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.4,0.8,0.9);
+       glTranslatef(4, 0, 7);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.9);
+       glTranslatef(5, 0, 5);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    /*Cilj*/
+    glPushMatrix();
+       glColor3f(0,0,0);
+       glTranslatef(5, 0, 6);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(5, 0, 7);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    
+    glPushMatrix();
+       glColor3f(0.372549,0.623529,0.623529);
+       glTranslatef(6, 0, 1);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.38, 0.70, 0.70);
+       glTranslatef(6, 0, 2);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+     glColor3f(0.4,0.70,0.80);
+       glTranslatef(6, 0, 5);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.75);
+       glTranslatef(6, 0, 6);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.5,0.70,0.80);
+       glTranslatef(6, 0, 7);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.8,0.9);
+       glTranslatef(6, 0, 8);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.9);
+       glTranslatef(6, 0, 9);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(7, 0, 1);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.372549,0.623529,0.623529);
+       glTranslatef(7, 0, 2);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.38, 0.70, 0.70);
+       glTranslatef(7, 0, 2);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(7, 0, 3);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    /* otvara se ako se negde stane
+    glPushMatrix();
+    //   glColor3f(0.5,1,0);
+       glTranslatef(1, 0, 2);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    */
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.75);
+       glTranslatef(7, 0, 7);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+//stavi X
+    glPushMatrix();
+       glColor3f(0.5,0.70,0.80);
+       glTranslatef(7, 0, 8);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.8,0.9);
+       glTranslatef(7, 0, 9);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.9);
+       glTranslatef(8, 0, 1);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(8, 0, 2);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.372549,0.623529,0.623529);
+       glTranslatef(8, 0, 3);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.38, 0.70, 0.70);
+       glTranslatef(8, 0, 7);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(8, 0, 8);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.75);
+       glTranslatef(8, 0, 9);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.5,0.70,0.80);
+       glTranslatef(9, 0, 3);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.8,0.9);
+       glTranslatef(9, 0, 8);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(10, 0, 3);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.372549,0.623529,0.623529);
+       glTranslatef(10, 0, 4);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.38, 0.70, 0.70);
+       glTranslatef(10, 0, 5);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(10, 0, 8);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.75);
+       glTranslatef(11, 0, 3);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.5,0.70,0.80);
+       glTranslatef(11, 0, 4);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.8,0.9);
+       glTranslatef(11, 0, 5);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.9);
+       glTranslatef(11, 0, 6);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(11, 0, 7);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.372549,0.623529,0.623529);
+       glTranslatef(11, 0, 8);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.38, 0.70, 0.70);
+       glTranslatef(11, 0, 9);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(12, 0, 4);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.75);
+       glTranslatef(12, 0, 5);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.5,0.70,0.80);
+       glTranslatef(12, 0, 6);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.8,0.9);
+       glTranslatef(12, 0, 7);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.9);
+       glTranslatef(12, 0, 8);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.4,0.70,0.80);
+       glTranslatef(12, 0, 9);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.372549,0.623529,0.623529);
+       glTranslatef(13, 0, 4);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+       glColor3f(0.38, 0.70, 0.70);
+       glTranslatef(13, 0, 5);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    /* otvara se
+    glPushMatrix();
+       glColor3f(0.5,1,0);
+       glTranslatef(13, 0, 8);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+    */
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.75);
+       glTranslatef(13, 0, 9);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+
+//staviti X
+    glPushMatrix();
+       glColor3f(0.37,0.68,0.9);
+       glTranslatef(13, 0, 10);
+       glScalef(1, 0.05, 1);
+       glutSolidCube(1);
+    glPopMatrix();
+}   
+ 
 void on_display(void)
 {
     /* Pozicija svetla (u pitanju je beskonacno daleko svetlo). */
@@ -77,6 +534,34 @@ void on_display(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
  
+        material_and_light();
+    
+    gluLookAt(
+            10, 15, 25,
+            0, 0, 0,
+            0, 1, 0
+        );
+    
+        glBegin(GL_LINES);
+     /*X*/
+            glColor3f(1,0,0);
+            glVertex3f(0, 0, 0);
+            glVertex3f(100, 0, 0);
+    /*Y*/ 
+            glColor3f(0,1,0);
+            glVertex3f(0, 0, 0);
+            glVertex3f(0, 100, 0);
+    /*Z*/
+            glColor3f(0,0,1);
+            glVertex3f(0, 0, 0);
+            glVertex3f(0, 0, 100);
+        glEnd();
+ 
+    /*
+     * Kreira se kocka i primenjuje se skaliranje.
+     */
+   stage();
+    
     /* Nova slika se salje na ekran. */
     glutSwapBuffers();
 }
@@ -90,6 +575,17 @@ void on_timer(int id)
     }
  
     glutPostRedisplay();
+}
+
+void on_reshape(int width, int height)
+{
+    /* Podesava se viewport. */
+    glViewport(0, 0, width, height);
+ 
+    /* Podesava se projekcija. */
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60, (float)width / height, 1, 100);
 }
 
 void material_and_light(){
