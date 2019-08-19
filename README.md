@@ -24,7 +24,7 @@ Taster | Događaj
 <kdb>:arrow_down:</kdbg> | kvadar se rotira na dole za 90<sup>o</sup>, ako kvadar stoji uspravno, u suprotnom<sup>*</sup>
 <kbd>Esc</kbd> | izlaz iz igre
 
-*izuzetak kod kretanja pogledati na [linku](https://github.com/MATF-RG18/RG137-kvadar-do-kvadrata/tree/master/Pictures%20and%20videos/Videos)! 
+*izuzetak kod kretanja pogledati na [linku](https://github.com/MATF-RG18/RG137-kvadar-do-kvadrata/tree/master/Pictures%20and%20videos/Videos/Exceptions.gif)! 
 
 ## Dodatno
 Izveštaji razvoja igrice se nalaze na [wiki](https://github.com/MATF-RG18/RG137-kvadar-do-kvadrata/wiki) stranici, a za bolji uvid probati samu igricu :wink:.
