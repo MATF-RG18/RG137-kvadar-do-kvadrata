@@ -1,10 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 #include<math.h>
-#include<stdarg.h>
 #include<GL/glut.h>
 #include<GL/freeglut.h>
-#include<string.h>
 #include"./SOIL.h"
 
   /* Deklaracije callback funkcija. */
@@ -13,28 +12,40 @@ void on_keyboards(int key, int x, int y);
 void on_reshape(int width, int height);
 void on_display(void);
 void on_timer(int id);
-void material_and_light();
-void generate_polygon();
-void define_textures();
-void dealloc();
 
-    /* Parametar animacije, fleg koji odredjuje da li je animacija u toku ili nije.*/
+    /* Iinicijalizacija svetla. */
+void material_and_light(void);
+
+    /* Funkcija koja generise novi nivo. */
+void generate_polygon(void);
+
+    /* Inicijalizacija i definicija teksture. */
+void define_textures(void);
+
+    /* Dealociranje matrice. */
+void dealloc(void);
+
+    /* Parametar animacije koji odredjuje da li je animacija u toku ili nije. */
 #define TIMER_ID 0
 #define TIMER_INTERVAL 10
 
-    /*Parametar za kretanje kvadra.*/
+    /* Parametar za kretanje kvadra. */
 int animation_ongoing = 0;
 
-    /*Parametri za iscrtavanje i kretanje kvadra.*/
+    /* Parametri za iscrtavanje i kretanje kvadra, parametar za nivo. */
 int n, m, p, q, indikator=0, up_key=0, key_pre=0, ind_pre=0, count_3=0, count_4=0, 
-    count_1=0, count_2=0, count_all=0, level=0;
+    count_1=0, count_2=0, count_all=0, level=0, ind_pre_pre=0;
+    
+    /* Matrica(poligon) */
 int **mat;
-    /*Pocetna pozicija kvadra.*/
+
+    /* Pocetna pozicija kvadra. */
 float curr_i=8, curr_j=2;
-    /*Ugao rotacije za prikaz pobede.*/ 
+
+    /* Ugao rotacije 2 kocke(koje predstavljaju polovinu kvadra) koje se prikazuju kada igrac stigne do cilja. */ 
 float rotation;
 
-    /*Stringovna reprezentacija broja poteza.*/
+    /* Stringovna reprezentacija broja poteza. */
 char buffer[20];
 
     /*Tekstura*/
@@ -62,14 +73,14 @@ int main(int argc, char **argv)
     glClearColor(0.95, 0.4, 0.2, 0); /*prvobitna boja pozadine, kasnije stavljena tekstura*/
     glEnable(GL_DEPTH_TEST);
  
-    /* Postavljaju se svojstva prvog svetla */
+    /* Postavljamo se svojstva prvog svetla */
     glEnable(GL_LIGHT0);
     glEnable(GL_NORMALIZE);
     
-    /*Definisemo teksturu.*/
+    /* Definisemo teksturu. */
     define_textures();
     
-    /*Generisemo poligon na osnovu nivoa(level).*/
+    /* Generisemo poligon na osnovu globalne promenljive level. */
     generate_polygon();
     
     /* Program ulazi u glavnu petlju. */
@@ -83,15 +94,16 @@ void on_keyboards(int key, int x, int y){
   case GLUT_KEY_LEFT:
       if(animation_ongoing){
 	  count_all++;
-          count_3++;
+          count_3++; /* fleg koji registruje da li je pritisnuta leva strelica */
           count_1=0;
           count_2=0;
           count_4=0;
-          key_pre=up_key;
-          ind_pre=indikator;
+          key_pre=up_key; /* key_pre pamti prethodno pritisnutu strelicu */
+          ind_pre_pre=ind_pre; /* ind_pre_pre pamti pretprosli polozaj kvadra*/
+          ind_pre=indikator; /* ind_pre pamti prethodni polozaj kvadra */
           up_key=3;
-            if(indikator==0){   /*uspravno*/
-                indikator=1;  /*vodoravno*/
+            if(indikator==0){   /* uspravno */
+                indikator=1;  /* vodoravno */
             }
             else if(indikator==1 && ind_pre==0){
               if(up_key==1 || up_key==2){
@@ -104,24 +116,24 @@ void on_keyboards(int key, int x, int y){
               }
            }
            else if(indikator==1 && ind_pre==1){
-             count_3--;
+                count_3--;
                if((key_pre==3 || key_pre==4) && count_3==1){
                    indikator=0;
                    curr_j--;
                    count_3=0;
-               }/*
-               else{
-                   if(key_pre==4){
-                       indikator=0;
-                       curr_j--;
-                   }*/
+               }
                else{
                    indikator=1;
+                   if(ind_pre_pre==0 && key_pre==4){
+                       indikator--;
+                       curr_j--;
+                   }
                }
-            }
-          
+           }
+        /* Ako igrac pomeri kvadar tako da on bilo kojom stranom dodiruje 0 u matrici, igra se prekida. */  
         if((mat[(int)curr_i][(int)curr_j]==0 && indikator==0) || 
-           (mat[(int)curr_i][(int)curr_j-2]==0 && mat[(int)curr_i][(int)curr_j-1]==1 && ind_pre==0) || 
+           (mat[(int)curr_i][(int)curr_j-2]==0 && mat[(int)curr_i][(int)curr_j-1]==1 && ind_pre==0) ||
+           (mat[(int)curr_i-1][(int)curr_j-1]==0 && mat[(int)curr_i][(int)curr_j]==1 && ind_pre==1 && ind_pre_pre==1) ||
             mat[(int)curr_i][(int)curr_j-1]==0){
                 printf("You steped over the edge -> Game over!\n");
                 exit(0);
@@ -130,6 +142,8 @@ void on_keyboards(int key, int x, int y){
         glutPostRedisplay();
     }
     break;
+    
+    /* U nastavku je primenjena slicna logika samo su druge strelice. */
    case GLUT_KEY_RIGHT:
       if(animation_ongoing){
           count_all++;
@@ -138,6 +152,7 @@ void on_keyboards(int key, int x, int y){
           count_3=0;
           count_4++;
           key_pre=up_key;
+          ind_pre_pre=ind_pre;
           ind_pre=indikator;
           up_key=4;        
             if(indikator==0){
@@ -158,13 +173,14 @@ void on_keyboards(int key, int x, int y){
                 if((key_pre==4 || key_pre==3) && count_4==1){
                     indikator=0;
                     count_4=0;
-                }/*
-                else{ if(key_pre==3) 
-                        indikator=0;*/
-                else
+                }
+                else{
                     indikator=1;
+                    if(ind_pre_pre==0 && key_pre==3){
+                       indikator--;
+                   }
+                }
           }
-          
         if((mat[(int)curr_i][(int)curr_j]==0 && indikator==0) || 
            (mat[(int)curr_i][(int)curr_j+1]==0) || 
            (mat[(int)curr_i-1][(int)curr_j+1]==0 && mat[(int)curr_i][(int)curr_j+1]==1 && ind_pre==1 && indikator==1)){
@@ -183,6 +199,8 @@ void on_keyboards(int key, int x, int y){
         count_4=0;
         count_1++;
         key_pre=up_key;
+        ind_pre_pre=ind_pre;
+        ind_pre_pre=ind_pre;
         ind_pre=indikator;
         up_key=1;
           if(indikator==0){
@@ -204,7 +222,6 @@ void on_keyboards(int key, int x, int y){
                     indikator=1;
                }
           }
-
           if((mat[(int)curr_i][(int)curr_j]==0 && indikator==0) || 
               mat[(int)curr_i-1][(int)curr_j]==0 || 
              (mat[(int)curr_i-1][(int)curr_j]==1 && mat[(int)curr_i-2][(int)curr_j]==0 && indikator==1)){
@@ -245,7 +262,6 @@ void on_keyboards(int key, int x, int y){
                 curr_i++;  
               }
           }
-          
           if((mat[(int)curr_i][(int)curr_j]==0 && indikator==0) || 
               mat[(int)curr_i+1][(int)curr_j]==0){
                 printf("You steped over the edge -> Game over!\n");
@@ -273,29 +289,26 @@ void on_keyboard(unsigned char key, int x, int y)
         break;  
     } 
 }
- 
-
     /*    sajt odakle je preuzeta nijansa plave boje
         https://community.khronos.org/t/color-tables/22518
-        CadetBlue = color red 0.372549 green 0.623529 blue 0.623529
-    */
-
+        CadetBlue = color red 0.372549 green 0.623529 blue 0.623529 */
+    
 void generate_polygon(){
 
-    FILE *dat;
+    FILE *dat; /* Hvala koleginici Lei Petkovic na ideji za ucitavanje poligona preko matrice. */
     
-    if(level==0){
-        dat = fopen("./Level/lvl1.txt", "r");
+    if(level==0){ /* Brojanje nivoa krece od 0, tako da je ovo ustvari prvi nivo.*/
+        dat = fopen("Level/lvl1.txt", "r");
     }
     else if(level==1){
-        dat = fopen("./Level/lvl2.txt", "r");
-        curr_i=6; /*Inicijalna pozicija kvadra.*/
+        dat = fopen("Level/lvl2.txt", "r");
+        curr_i=6; /* Inicijalna pozicija kvadra u drugom nivou. */
         curr_j=12;
     }
     else if(level==2){
-        dat = fopen("./Level/lvl3.txt", "r");
-        curr_i=8; /*Inicijalna pozicija kvadra.*/
-        curr_j=2;
+        dat = fopen("Level/lvl3.txt", "r");
+        curr_i=9; /* Inicijalna pozicija kvadra u trecem nivou. */
+        curr_j=1;
     }
  
     if(dat==NULL){
@@ -303,8 +316,8 @@ void generate_polygon(){
         exit(0);
     }  
  
-    fscanf(dat, "%d%d", &n, &m); /*Ucitavamo broj kolona i vrsta matrice.*/
-    fscanf(dat, "%d%d", &p, &q); /*Koordinate kraja.*/
+    fscanf(dat, "%d%d", &n, &m); /* Ucitavamo broj kolona i vrsta matrice. */
+    fscanf(dat, "%d%d", &p, &q); /* Koordinate kraja. */
 
     mat = malloc(n*sizeof(int*));
  
@@ -315,7 +328,6 @@ void generate_polygon(){
 
     for(int r=0;r<n;r++){
         mat[r]=malloc(m*sizeof(int));
-        
         if(mat[r]==NULL){
             printf("Neuspesna alokacija!\n");
             exit(0);
@@ -343,13 +355,12 @@ void on_display(void)
     
     gluLookAt(
             8, 8, 14,
-            0, 1, 4,  //TODO
-                      /*check umesto 3 je bilo 4*/
+            0, 1, 4,
             0, 1, 0
         );
     if(level<=2){
-        
-    /*  glBegin(GL_LINES);
+    /* Koordinatne ose, koriscene radi lakseg crtanja i orijentisanja.     
+       glBegin(GL_LINES);         
     // X-red
             glColor3f(1,0,0);
             glVertex3f(0, 0, 0);
@@ -395,7 +406,7 @@ void on_display(void)
      glEnable(GL_COLOR_MATERIAL);
 
      
-     int ind=0; /*Za kockice poligona, u odnosu na ind se postavlja plava ili zelena boja.*/   
+     int ind=0; /* Indikator za boju kockice poligona, ako je ind neparno se postavlja plava u suprotnom zelena. */   
    
      /*0-padanje, 1-kocka, 4-cilj*/
     for(int i=0; i<n; i++){
@@ -409,7 +420,6 @@ void on_display(void)
                     glColor3f(0.372549, 0.62329, 0.623529);
                 else
                     glColor3f(0.1, 0.8, 0.4);    
-                
                 glutSolidCube(1);
                 glPopMatrix();
             }
@@ -417,15 +427,14 @@ void on_display(void)
                 glPushMatrix();
                 glTranslatef(j, 0, i);
                 if(level==2)
-                    glColor3f(1, 0, 0);
+                    glColor3f(1, 0, 0); /* Boja cilja u poslednjem nivou je crvena. */
                 else
-                    glColor3f(0, 0, 0);
-       
+                    glColor3f(0, 0, 0); /* U ostalim nivoima boja cilja je crna. */
                 glutSolidCube(1);
                 glPopMatrix();
       
                 if(curr_i==i && curr_j==j && indikator==0){
-                    printf("SUCCESS!!!\n");
+                    printf("SUCCESS!!!\n"); /* Ispisuje se u terminalu svaki put kada se uspesno predje nivo. */
                     if(level<=2){
                         level++;
                         dealloc();
@@ -438,7 +447,7 @@ void on_display(void)
         }
     }
     
-    /*Uspravan kvadar.*/
+    /* Crtamo uspravan kvadar. */
     if(indikator==0){
         if(up_key==1 || up_key==2){
             glPushMatrix();
@@ -457,7 +466,7 @@ void on_display(void)
             glPopMatrix();
         }
     }
-    /*Vodoravan kvadar u odnosu na z i x osu.*/
+    /* Crtamo vodoravan kvadar u odnosu na z i x osu. */
     else if(indikator==1){
         if((up_key==1 || up_key==2) && ind_pre==1 && (key_pre==3 || key_pre==4)){
             glPushMatrix();
@@ -486,7 +495,7 @@ void on_display(void)
         }
     }
 
-    /*Tekst-broj pocetak, poruka i broj nivoa.*/
+    /* Tekst-uputstvo za pocetak, poruka, broj nivoa i broj poteza.*/
     glPopMatrix();
         glColor3f(0.8, 0.8, 0);
         glPushAttrib(GL_ENABLE_BIT);
@@ -503,7 +512,7 @@ void on_display(void)
 
     int number;
 
-    /*count_all se uvecava svaki put kada se pritisne neka strelica na tastaturi*/
+    /* count_all se uvecava svaki put kada se pritisne neka strelica na tastaturi. */
     number=count_all;
 
     sprintf(buffer, "Moves: %d", number);
@@ -526,7 +535,7 @@ void on_display(void)
         glRasterPos2i(38, 280);
         glutBitmapString(GLUT_BITMAP_HELVETICA_18,
                      "Good luck :)");
-        glRasterPos2i(260, 280);
+        glRasterPos2i(250, 280);
         glutBitmapString(GLUT_BITMAP_HELVETICA_18,
                      "Level: 2/3");
 	glRasterPos2i(110, 18);
@@ -537,7 +546,7 @@ void on_display(void)
         glRasterPos2i(38, 280);
         glutBitmapString(GLUT_BITMAP_HELVETICA_18,
                      "Good luck :)");
-        glRasterPos2i(260, 280);
+        glRasterPos2i(250, 280);
         glutBitmapString(GLUT_BITMAP_HELVETICA_18,
                      "Level: 3/3");
 	glRasterPos2i(110, 18);
@@ -569,6 +578,7 @@ void on_display(void)
          
     glClearColor(0, 0, 0, 0);
     
+    /* Crtamo 2 crvene kocke. */
     glPushMatrix();
         glColor3f(1, 0, 0);
         glTranslatef(20, -20, 4);
@@ -604,14 +614,12 @@ void on_display(void)
         glRasterPos2i(80, 100);
         glutBitmapString(GLUT_BITMAP_9_BY_15,
                      buffer);
-
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glPopAttrib();         
 	       
     }
-    
     /* Nova slika se salje na ekran. */
     glutSwapBuffers();
 }
@@ -647,7 +655,8 @@ void dealloc(){
 }
 
 void material_and_light(){
-     /* Parametri svetla i podrazumevanog materijala */
+    
+     /* Parametri svetla i podrazumevanog materijala. */
     GLfloat light_ambient[] = { 0.1, 0.1, 0.1, 1 };
     GLfloat light_diffuse[] = { 0.7, 0.7, 0.7, 1 };
     GLfloat light_specular[] = { 0.9, 0.9, 0.9, 1 };
@@ -657,12 +666,11 @@ void material_and_light(){
     GLfloat specular_coeffs[] = { 1, 1, 1, 1 };
     GLfloat shininess = 30;   
 
-    
     glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
  
-    /* Postavljaju se svojstva materijala */
+    /* Postavljaju se svojstva materijala. */
     glMaterialfv(GL_FRONT, GL_AMBIENT, ambient_coeffs);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse_coeffs);
     glMaterialfv(GL_FRONT, GL_SPECULAR, specular_coeffs);
