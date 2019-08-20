@@ -6,7 +6,7 @@ Projekat je nastao na kursu Računarska grafika. Za implementaciju su korišćen
 
 ## Instalacija i pokretanje :computer:
 
-Da bi se program izvršavao na vašem računaru, potrebno je da: instalirate biblioteke OpenGL i SOIL ```sudo apt-get install binutils-gold freeglut3 freeglut3-dev libsoil-dev```, nakon ovoga treba preuzeti projekat sa github-a, raspakovati i preko terminala se pozicionirati u datoteku gde je smešten program, zatim izvršiti komandu ```make```. Program pokrenuti komandom:
+Da bi se program izvršavao na vašem računaru, potrebno je da: instalirate biblioteke OpenGL i SOIL ```sudo apt-get install binutils-gold freeglut3 freeglut3-dev libsoil-dev```, nakon ovoga treba preuzeti projekat sa github-a, raspakovati ga i preko terminala se pozicionirati u datoteku gde je smešten program, zatim izvršiti komandu ```make```. Program pokrenuti komandom:
 ```sh
 ./kvadar_do_kvadrata
 ```
